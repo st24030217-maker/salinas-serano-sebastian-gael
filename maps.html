@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa UTLD - salinas serano sebastian gael</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #022bfd;
+      }
+      #contenedor {
+        max-width: 1000px;
+        margin: auto;
+        background: rgb(255, 0, 13);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #1e0063;
+        border-bottom: 2px solid #9ce7cd;
+        padding-bottom: 10px;
+      }
+
+      #map {
+        height: 500px;
+        width: 100%;
+        border-radius: 8px;
+        border: 2px solid #7cfd03;
+      }
+
+      .controles {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 12px 18px;
+        cursor: pointer;
+        background: #ffa702;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      button:hover {
+        background: #004a31;
+        transform: translateY(-2px);
+      }
+
+      .info {
+        margin-top: 15px;
+        padding: 10px;
+        background: #f9f9f9;
+        border-left: 4px solid #006341;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="contenedor">
+      <h2>Universidad tecnologica de la Laguna Durango</h2>
+
+      <div id="map"></div>
+
+      <div
+        class="info"
+        style="margin-top: 10px; background: rgb(12, 148, 7); padding: 10px"
+      >
+        <strong>Tip:</strong> Haz clic en el mapa para abrir el formulario de
+        guardado.
+      </div>
+    </div>
+
+      <dialog id="miPopup" class="popup">
+  <form method="dialog" class="form">
+
+    <div class="inputs">
+      <label>Nombre del lugar</label>
+      <input type="text" id="place-name" placeholder="Ej: Parque" />
+    </div>
+
+    <div class="inputs">
+      <label>Entre calle</label>
+      <input type="text" id="calle1" placeholder="Ej: Av Juarez" />
+    </div>
+
+    <div class="inputs">
+      <label>Y calle</label>
+      <input type="text" id="calle2" placeholder="Ej: Calle Hidalgo" />
+    </div>
+
+    <div class="inputs">
+      <label>Coordenadas</label>
+      <input type="text" id="coords-display" readonly />
+    </div>
+
+    <div style="display:flex; gap:10px;">
+      <button type="button" id="btn-save" class="btn-save">Guardar</button>
+      <button type="button" onclick="document.getElementById('miPopup').close()">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+</dialog>
+
+      <div class="controles">
+        <button onclick="irAUTLD()">Ir a la UTLD</button>
+        <button onclick="irTorreon()">Ver Comarca Lagunera</button>
+        <button onclick="cambiarZoom(18)">Vista de Calle (Zoom)</button>
+        <button onclick="cambiarZoom(12)">Vista Regional</button>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+     
+      const SUPABASE_URL = "https://btdmaftsrhmxfhmflfaz.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_gaG4HkLUFJ5Zkjhm5bUJkA_svj0Fpnt";
+      const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  
+      const coordsUTLD = [25.5011819, -103.5538457];
+      const coordsTorreon = [25.5439, -103.419];
+
+      const map = L.map("map").setView(coordsUTLD, 16);
+      const modal = document.querySelector("#miPopup");
+const inputNombre = document.querySelector("#place-name");
+const inputCalle1 = document.querySelector("#calle1");
+const inputCalle2 = document.querySelector("#calle2");
+const inputCoords = document.querySelector("#coords-display");
+const btnSave = document.querySelector("#btn-save");
+
+let tempLatLng = null;
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+     
+      let marcadorUTLD = L.marker(coordsUTLD).addTo(map);
+      marcadorUTLD
+        .bindPopup(
+          "<b>UTLD</b><br>Universidad Tecnológica de la Laguna Durango",
+        )
+        .openPopup();
+
+  
+      function irAUTLD() {
+        map.flyTo(coordsUTLD, 17, { duration: 1.5 });
+      }
+
+      function irTorreon() {
+        map.flyTo(coordsTorreon, 13, { duration: 1.5 });
+      }
+
+      function cambiarZoom(nivel) {
+        map.setZoom(nivel);
+      }
+
+      
+      map.on("click", function (e) {
+
+  tempLatLng = e.latlng;
+
+  inputCoords.value =
+    tempLatLng.lat.toFixed(5) + ", " + tempLatLng.lng.toFixed(5);
+
+  inputNombre.value = "";
+  inputCalle1.value = "";
+  inputCalle2.value = "";
+
+  modal.showModal(); 
+
+});
+
+btnSave.onclick = async function () {
+
+  const nombre = inputNombre.value;
+  const calle1 = inputCalle1.value;
+  const calle2 = inputCalle2.value;
+
+  if (nombre.length < 3) {
+    alert("Escribe un nombre válido");
+    return;
+  }
+
+  modal.close();
+
+  const marcador = L.marker([tempLatLng.lat, tempLatLng.lng]).addTo(map);
+
+  marcador.bindPopup("Guardando...").openPopup();
+
+  try {
+
+    const { error } = await _supabase.from("cordenadas").insert([
+      {
+        lat: tempLatLng.lat,
+        lng: tempLatLng.lng,
+        nombre: nombre,
+        calle1: calle1,
+        calle2: calle2
+      },
+    ]);
+
+    if (error) throw error;
+
+    marcador.setPopupContent(
+      `<b>${nombre}</b><br>
+       Entre ${calle1} y ${calle2}<br>
+       Guardado correctamente`
+    );
+
+  } catch (err) {
+
+    marcador.setPopupContent("Error al guardar");
+    console.error(err);
+
+  }
+};
+    </script>
+  </body>
+</html>
