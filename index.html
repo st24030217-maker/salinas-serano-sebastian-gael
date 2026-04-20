@@ -1,490 +1,328 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Pesonal-salinas serrano sebastian gael</title>
-    <!-- Favicon-->
+    <title>ZONA LAGUNA - Mapa Interactivo</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Custom Google font-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      href="https://fonts.googleapis.com/css?family=Varela+Round"
       rel="stylesheet"
     />
-    <!-- Bootstrap icons-->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet"
     />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <link href="styles.css" rel="stylesheet" />
+    <style>
+      /* Estilos personalizados para la integración del mapa */
+      #map-section {
+        padding: 5rem 0;
+        background: linear-gradient(to bottom, #161616 0%, #000000 100%);
+      }
+      #map {
+        height: 600px;
+        width: 100%;
+        border-radius: 15px;
+        border: 4px solid #64a19d;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      .map-controls {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      dialog#miPopup {
+        border: none;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        width: 300px;
+        z-index: 2000; /* Asegurar que salga sobre el mapa */
+      }
+      .form-inputs {
+        margin-bottom: 15px;
+      }
+      .form-inputs label {
+        display: block;
+        font-weight: bold;
+        font-size: 0.8rem;
+        color: black;
+      }
+      .form-inputs input {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: black;
+      }
+
+      /* --- ESTILO PARA EL EMOJI INTERACTIVO --- */
+      .emoji-marker {
+        font-size: 30px; /* Tamaño del emoji */
+        line-height: 1;
+        text-align: center;
+        /* Efecto de sombra y animación suave */
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease-out;
+        cursor: pointer;
+      }
+      .emoji-marker:hover {
+        transform: scale(1.3) translateY(-5px); /* Se agranda y sube un poco al pasar el mouse */
+      }
+    </style>
   </head>
-  <body class="d-flex flex-column h-100">
-    <main class="flex-shrink-0">
-      <!-- Navigation-->
-      <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-        <div class="container px-5">
-          <a class="navbar-brand" href="index.html"
-            ><span class="fw-bolder text-primary"
-              >estudiante-salinas serrano sebastian gael</span
-            ></a
-          >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
-              <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="resume.html">Resume</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="projects.html">Projects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!-- Header-->
-      <header class="py-5">
-        <div class="container px-5 pb-5">
-          <div class="row gx-5 align-items-center">
-            <div class="col-xxl-5">
-              <!-- Header text content-->
-              <div class="text-center text-xxl-start">
-                <div
-                  class="badge bg-gradient-primary-to-secondary text-white mb-4"
-                >
-                  <div class="text-uppercase">
-                    &middot; universidad tecnologica de la laguna durango
-                    &middot;
-                  </div>
-                </div>
-                <div class="fs-3 fw-light text-muted">
-                  MI PORTAFOLIO PERSONAL
-                </div>
-                <h1 class="display-3 fw-bolder mb-5">
-                  <span class="text-gradient d-inline">SOY SEBAS</span>
-                </h1>
-                <div
-                  class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3"
-                >
-                  <a
-                    class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder"
-                    href="resume.html"
-                    >Resume</a
-                  >
-                  <a
-                    class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder"
-                    href="projects.html"
-                    >Projects</a
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="col-xxl-7">
-              <!-- Header profile picture-->
-              <div class="d-flex justify-content-center mt-5 mt-xxl-0">
-                <div class="profile bg-gradient-primary-to-secondary">
-                  <!-- TIP: For best results, use a photo with a transparent background like the demo example below-->
-                  <!-- Watch a tutorial on how to do this on YouTube (link)-->
-                  <img class="profile-img" src="eling.png" alt="..." />
-                  <div class="dots-1">
-                    <!-- SVG Dots-->
-                    <svg
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 191.6 1215.4"
-                      style="enable-background: new 0 0 191.6 1215.4"
-                      xml:space="preserve"
-                    >
-                      <g
-                        transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                      >
-                        <path
-                          d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"
-                        ></path>
-                      </g>
-                    </svg>
-                    <!-- END of SVG dots-->
-                  </div>
-                  <div class="dots-2">
-                    <!-- SVG Dots-->
-                    <svg
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 191.6 1215.4"
-                      style="enable-background: new 0 0 191.6 1215.4"
-                      xml:space="preserve"
-                    >
-                      <g
-                        transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                      >
-                        <path
-                          d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"
-                        ></path>
-                      </g>
-                    </svg>
-                    <!-- END of SVG dots-->
-                  </div>
-                  <div class="dots-3">
-                    <!-- SVG Dots-->
-                    <svg
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 191.6 1215.4"
-                      style="enable-background: new 0 0 191.6 1215.4"
-                      xml:space="preserve"
-                    >
-                      <g
-                        transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                      >
-                        <path
-                          d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"
-                        ></path>
-                      </g>
-                    </svg>
-                    <!-- END of SVG dots-->
-                  </div>
-                  <div class="dots-4">
-                    <!-- SVG Dots-->
-                    <svg
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 191.6 1215.4"
-                      style="enable-background: new 0 0 191.6 1215.4"
-                      xml:space="preserve"
-                    >
-                      <g
-                        transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-                      >
-                        <path
-                          d="M227.7,12788.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,12801.6,289.7,12808.6,227.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,12788.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,12801.6,1569.7,12808.6,1507.7,12788.6z"
-                        ></path>
-                        <path
-                          d="M227.7,11508.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,11521.6,289.7,11528.6,227.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,11508.6c-151-50-253-216-222-362c25-119,136-230,254-255c194-41,395,142,375,339c-11,105-90,213-190,262        C1663.7,11521.6,1569.7,11528.6,1507.7,11508.6z"
-                        ></path>
-                        <path
-                          d="M227.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,10241.6,289.7,10248.6,227.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,10228.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,10241.6,1569.7,10248.6,1507.7,10228.6z"
-                        ></path>
-                        <path
-                          d="M227.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,8961.6,289.7,8968.6,227.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,8948.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,8961.6,1569.7,8968.6,1507.7,8948.6z"
-                        ></path>
-                        <path
-                          d="M227.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,7681.6,289.7,7688.6,227.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,7668.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,7681.6,1569.7,7688.6,1507.7,7668.6z"
-                        ></path>
-                        <path
-                          d="M227.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,6401.6,289.7,6408.6,227.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,6388.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,6401.6,1569.7,6408.6,1507.7,6388.6z"
-                        ></path>
-                        <path
-                          d="M227.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,5121.6,289.7,5128.6,227.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,5108.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,5121.6,1569.7,5128.6,1507.7,5108.6z"
-                        ></path>
-                        <path
-                          d="M227.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,3841.6,289.7,3848.6,227.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,3828.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,3841.6,1569.7,3848.6,1507.7,3828.6z"
-                        ></path>
-                        <path
-                          d="M227.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,2561.6,289.7,2568.6,227.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,2548.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,2561.6,1569.7,2568.6,1507.7,2548.6z"
-                        ></path>
-                        <path
-                          d="M227.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C383.7,1281.6,289.7,1288.6,227.7,1268.6z"
-                        ></path>
-                        <path
-                          d="M1507.7,1268.6c-105-35-200-141-222-248c-43-206,163-412,369-369c155,32,275,190,260,339c-11,105-90,213-190,262        C1663.7,1281.6,1569.7,1288.6,1507.7,1268.6z"
-                        ></path>
-                      </g>
-                    </svg>
-                    <!-- END of SVG dots-->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-      <!-- About Section-->
-      <section class="bg-light py-5">
-        <div class="container px-5">
-          <div class="row gx-5 justify-content-center">
-            <div class="col-xxl-8">
-              <div class="text-center my-5">
-                <h2 class="display-5 fw-bolder">
-                  <span class="text-gradient d-inline">About Me</span>
-                </h2>
-                <p class="lead fw-light mb-4">
-                  im sebastian salinas serrano student for the TICS carrer.
-                </p>
-                <p class="text-muted">
-                  this is my student work space, well lets start.
-                </p>
-                <div class="d-flex justify-content-center fs-2 gap-4">
-                  <a class="text-gradient" href="#!"
-                    ><i class="bi bi-twitter"></i
-                  ></a>
-                  <a class="text-gradient" href="#!"
-                    ><i class="bi bi-linkedin"></i
-                  ></a>
-                  <a class="text-gradient" href="#!"
-                    ><i class="bi bi-github"></i
-                  ></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <!-- Footer-->
-    <footer class="bg-white py-4 mt-auto">
-      <div class="container px-5">
-        <div
-          class="row align-items-center justify-content-between flex-column flex-sm-row"
+  <body id="page-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#page-top">ZONA LAGUNA</a>
+        <button
+          class="navbar-toggler navbar-toggler-right"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-          <div class="col-auto">
-            <div class="small m-0">SGSS &copy; my Website 2026</div>
-          </div>
-          <div class="col-auto">
-            <a class="small" href="#!">Privacy</a>
-            <span class="mx-1">&middot;</span>
-            <a class="small" href="#!">Terms</a>
-            <span class="mx-1">&middot;</span>
-            <a class="small" href="#!">Contact</a>
+          Menu <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#map-section">Explorar Mapa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Acerca de</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#signup">Contacto</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="masthead">
+      <div
+        class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center"
+      >
+        <div class="text-center">
+          <h1 class="mx-auto my-0 text-uppercase">ZONA LAGUNA</h1>
+          <h2 class="text-white-50 mx-auto mt-2 mb-5">
+            Encuentra locales, guarda tus lugares favoritos y explora la Comarca
+            Laguna en tiempo real.
+          </h2>
+          <a class="btn btn-primary" href="#map-section">EMPEZAR A BUSCAR</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="map-section" class="about-section text-center">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-lg-10">
+            <h2 class="text-white mb-4">Mapa Interactivo</h2>
+            <p class="text-white-50 mb-5">
+              Haz clic en cualquier punto del mapa para registrar tu nuevo lugar
+              favorito.
+            </p>
+
+            <div id="map"></div>
+
+            <div class="map-controls mt-4">
+              <button class="btn btn-outline-light" onclick="irAUTLD()">
+                🏫 Ir a la UTLD
+              </button>
+              <button class="btn btn-outline-light" onclick="irTorreon()">
+                🏙️ Ver Comarca Lagunera
+              </button>
+              <button class="btn btn-primary" onclick="cambiarZoom(18)">
+                🔍 Zoom Calle
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
-    <!-- Bootstrap core JS-->
+    </section>
+
+    <dialog id="miPopup">
+      <h5 class="mb-3" style="color: black">Registrar Lugar ✏️</h5>
+      <form method="dialog">
+        <div class="form-inputs">
+          <label>Nombre del lugar</label>
+          <input type="text" id="place-name" placeholder="Ej: Tacos El Güero" />
+        </div>
+        <div class="form-inputs">
+          <label>Entre calle</label>
+          <input type="text" id="calle1" placeholder="Av. Juárez" />
+        </div>
+        <div class="form-inputs">
+          <label>Y calle</label>
+          <input type="text" id="calle2" placeholder="Calle Hidalgo" />
+        </div>
+        <div class="form-inputs">
+          <label>Coordenadas</label>
+          <input type="text" id="coords-display" readonly />
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" id="btn-save" class="btn btn-success btn-sm">
+            Guardar ✅
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            onclick="document.getElementById('miPopup').close()"
+          >
+            Cancelar ❌
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <section
+      class="about-section text-center bg-light"
+      id="about"
+      style="padding: 5rem 0; color: black !important"
+    >
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-lg-8">
+            <h2 class="mb-4" style="color: black">¡BIENVENIDO! 👋</h2>
+            <p class="text-black-50">
+              Esta aplicación te permite geolocalizar cualquier local que
+              necesites en la Zona Laguna de una forma divertida e interactiva.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/scripts.js"></script>
+
+    <script>
+      // Configuración de Supabase
+      const SUPABASE_URL = "https://btdmaftsrhmxfhmflfaz.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_gaG4HkLUFJ5Zkjhm5bUJkA_svj0Fpnt";
+      const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Coordenadas iniciales
+      const coordsUTLD = [25.5011819, -103.5538457];
+      const coordsTorreon = [25.5439, -103.419];
+
+      const map = L.map("map").setView(coordsUTLD, 16);
+      const modal = document.querySelector("#miPopup");
+      const inputNombre = document.querySelector("#place-name");
+      const inputCalle1 = document.querySelector("#calle1");
+      const inputCalle2 = document.querySelector("#calle2");
+      const inputCoords = document.querySelector("#coords-display");
+      const btnSave = document.querySelector("#btn-save");
+
+      let tempLatLng = null;
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap",
+      }).addTo(map);
+
+      // --- CAMBIO PARA EMOJI EN MARCADOR INICIAL ---
+      // Definimos un icono de emoji para la UTLD
+      const utldIcon = L.divIcon({
+        className: "emoji-marker", // Usamos la clase CSS definida arriba
+        html: "🏫", // El emoji que queremos mostrar
+        iconSize: [30, 30], // Tamaño del contenedor del icono
+        iconAnchor: [15, 30], // Punto del icono que se ancla a la coordenada (centro abajo)
+      });
+
+      let marcadorUTLD = L.marker(coordsUTLD, { icon: utldIcon }).addTo(map);
+      marcadorUTLD
+        .bindPopup(
+          "<b>UTLD</b><br>Universidad Tecnológica de la Laguna Durango",
+        )
+        .openPopup();
+
+      // Funciones del mapa
+      function irAUTLD() {
+        map.flyTo(coordsUTLD, 17, { duration: 1.5 });
+      }
+      function irTorreon() {
+        map.flyTo(coordsTorreon, 13, { duration: 1.5 });
+      }
+      function cambiarZoom(nivel) {
+        map.setZoom(nivel);
+      }
+
+      map.on("click", function (e) {
+        tempLatLng = e.latlng;
+        inputCoords.value =
+          tempLatLng.lat.toFixed(5) + ", " + tempLatLng.lng.toFixed(5);
+        inputNombre.value = "";
+        inputCalle1.value = "";
+        inputCalle2.value = "";
+        modal.showModal();
+      });
+
+      btnSave.onclick = async function () {
+        const nombre = inputNombre.value;
+        const calle1 = inputCalle1.value;
+        const calle2 = inputCalle2.value;
+
+        if (nombre.length < 3) {
+          alert("Escribe un nombre válido");
+          return;
+        }
+
+        modal.close();
+
+        // --- CAMBIO PARA EMOJI EN NUEVOS MARCADORES ---
+        // Definimos un icono genérico de "chincheta" para nuevos lugares
+        // Puedes cambiar '📍' por cualquier otro emoji como '🍕', '🏪', etc.
+        const nuevoIcono = L.divIcon({
+          className: "emoji-marker",
+          html: "📍",
+          iconSize: [30, 30],
+          iconAnchor: [15, 30],
+        });
+
+        const marcador = L.marker([tempLatLng.lat, tempLatLng.lng], {
+          icon: nuevoIcono,
+        }).addTo(map);
+        marcador.bindPopup("Guardando... ⏳").openPopup();
+
+        try {
+          const { error } = await _supabase.from("cordenadas").insert([
+            {
+              lat: tempLatLng.lat,
+              lng: tempLatLng.lng,
+              nombre: nombre,
+              calle1: calle1,
+              calle2: calle2,
+            },
+          ]);
+          if (error) throw error;
+          marcador.setPopupContent(
+            `<b>${nombre}</b><br>Entre ${calle1} y ${calle2}<br>Guardado correctamente ✅`,
+          );
+        } catch (err) {
+          marcador.setPopupContent("Error al guardar ❌");
+          console.error(err);
+        }
+      };
+    </script>
   </body>
 </html>
